@@ -33,15 +33,41 @@ export default async function GardenHomePage() {
   }
 
   const { plants, sections } = library;
+  const usedPlantIds = new Set<string>();
+  const examplePlantBySectionId = new Map(
+    sections.map((section) => {
+      const sectionPlants = plants.filter((plant) => plant.sectionId === section.id);
+      const preferred =
+        sectionPlants.find((plant) => plant.iconImageUrl && !usedPlantIds.has(plant.id)) ??
+        sectionPlants.find((plant) => plant.icon && !usedPlantIds.has(plant.id)) ??
+        sectionPlants.find((plant) => !usedPlantIds.has(plant.id)) ??
+        sectionPlants[0];
+
+      if (preferred) {
+        usedPlantIds.add(preferred.id);
+      }
+
+      return [section.id, preferred] as const;
+    }),
+  );
 
   return (
     <GardenShell
       eyebrow="Garden Library"
-      title="A living index of the understory."
-      intro="Fresh data from Airtable, organized around the garden itself: sections first, plants second, with a calm utility layer for searching and export."
+      title="The Gardens at 400 Florence"
+      intro="An interactive map of my garden, where you can explore each section and see my selection of plants."
     >
       <div className="space-y-8">
         <PlantOfTheDay plants={plants} />
+
+        <section>
+          <Link
+            href="/garden/plants"
+            className="inline-flex rounded-full border border-[#d3c48766] bg-[#d3c48722] px-6 py-3 text-sm font-medium text-[#f5e7bb] transition hover:-translate-y-0.5 hover:bg-[#d3c48730]"
+          >
+            Browse all plants
+          </Link>
+        </section>
 
         <section className="grid gap-4 md:grid-cols-2">
           <SummaryCard
@@ -56,25 +82,14 @@ export default async function GardenHomePage() {
           />
         </section>
 
-        <section className="flex flex-wrap gap-3">
-          <Link
-            href="/garden/plants"
-            className="rounded-full border border-[#d3c4873b] bg-[#d3c48712] px-4 py-2 text-sm text-[#efe3ba] transition hover:bg-[#d3c4871f]"
-          >
-            Browse all plants
-          </Link>
-          <Link
-            href="/garden/export"
-            className="rounded-full border border-[#8ca7892d] bg-[#0b1712] px-4 py-2 text-sm text-[#c4d0bd] transition hover:border-[#a8b89a46]"
-          >
-            Open export surface
-          </Link>
-        </section>
-
         {sections.length > 0 ? (
           <section className="grid gap-5 lg:grid-cols-2">
             {sections.map((section) => (
-              <SectionCard key={section.id} section={section} />
+              <SectionCard
+                key={section.id}
+                section={section}
+                examplePlant={examplePlantBySectionId.get(section.id)}
+              />
             ))}
           </section>
         ) : (
@@ -83,6 +98,15 @@ export default async function GardenHomePage() {
             message="The garden home is ready, but Airtable didn't return any Garden Sections records."
           />
         )}
+
+        <section className="flex justify-start pt-2">
+          <Link
+            href="/garden/export"
+            className="rounded-full border border-[#8ca78933] bg-[rgba(8,15,12,0.52)] px-4 py-2 text-sm text-[#d6dfcf] transition hover:-translate-y-0.5 hover:border-white/18"
+          >
+            Open export
+          </Link>
+        </section>
       </div>
     </GardenShell>
   );

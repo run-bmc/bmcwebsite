@@ -20,20 +20,29 @@ export function SummaryCard({
   );
 }
 
-export function SectionCard({ section }: { section: Section }) {
+export function SectionCard({
+  section,
+  examplePlant,
+}: {
+  section: Section;
+  examplePlant?: Plant;
+}) {
   return (
     <Link
       href={`/garden/sections/${section.slug}`}
       className="garden-surface group block overflow-hidden px-6 py-5 transition duration-300 hover:-translate-y-1 hover:border-white/18 hover:bg-[rgba(8,15,12,0.68)]"
     >
       <div className="relative flex items-start justify-between gap-4">
-        <div>
+        <div className="flex min-w-0 items-start gap-4">
+          <PlantSprite plant={examplePlant} compact />
+          <div className="min-w-0">
           <p className="garden-eyebrow text-[11px] text-[#dbe4d6] uppercase">
             Garden Section
           </p>
           <h2 className="garden-heading mt-4 text-[1.85rem] leading-[1.02] text-[#f6f4ee]">
             {section.name}
           </h2>
+          </div>
         </div>
         <div className="garden-pill px-3 py-1.5 text-[11px] font-medium tracking-[0.08em] text-[#f3eee0]">
           {section.plantCount} plants
@@ -98,15 +107,18 @@ export function PlantCard({
   );
 }
 
-function PlantSprite({ plant }: { plant: Plant }) {
-  if (plant.iconImageUrl) {
+function PlantSprite({ plant, compact = false }: { plant?: Plant; compact?: boolean }) {
+  const frameSize = compact ? "h-14 w-14" : "h-16 w-16";
+  const iconSize = compact ? "56px" : "64px";
+
+  if (plant?.iconImageUrl) {
     return (
-      <div className="garden-icon-frame relative h-16 w-16 shrink-0 overflow-hidden">
+      <div className={`garden-icon-frame relative shrink-0 overflow-hidden ${frameSize}`}>
         <Image
           src={plant.iconImageUrl}
           alt={plant.name}
           fill
-          sizes="64px"
+          sizes={iconSize}
           className="object-cover [image-rendering:pixelated]"
         />
       </div>
@@ -114,8 +126,12 @@ function PlantSprite({ plant }: { plant: Plant }) {
   }
 
   return (
-    <div className="garden-icon-frame flex h-16 w-16 shrink-0 items-center justify-center text-[30px] text-[#f7f3ea]">
-      {plant.icon || "✿"}
+    <div
+      className={`garden-icon-frame flex shrink-0 items-center justify-center text-[#f7f3ea] ${frameSize} ${
+        compact ? "text-[26px]" : "text-[30px]"
+      }`}
+    >
+      {plant?.icon || "✿"}
     </div>
   );
 }

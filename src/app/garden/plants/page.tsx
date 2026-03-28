@@ -26,8 +26,8 @@ export default async function PlantsIndexPage() {
   return (
     <GardenShell
       eyebrow="All Plants"
-      title="The full library, with a light utility layer."
-      intro="Search by name, scan by section, and narrow by tags without turning the experience into a dashboard."
+      title="The full library."
+      intro="Search by name, scan by section, and narrow by tags."
     >
       {plants.length > 0 ? (
         <SearchAndFilterBar plants={plants} sections={sections} />
