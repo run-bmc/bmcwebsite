@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { siteConfig } from "@/config/site";
 
 export function TopNav() {
@@ -7,10 +8,17 @@ export function TopNav() {
         <span className="pointer-events-auto text-sm font-medium tracking-[0.24em] text-stone-100 uppercase">
           {siteConfig.name}
         </span>
-        <nav
-          aria-label="External profile links"
-          className="pointer-events-auto flex flex-wrap items-center justify-end gap-1 sm:gap-3"
-        >
+        <div className="pointer-events-auto flex flex-wrap items-center justify-end gap-1 sm:gap-3">
+          <Link
+            href="/garden"
+            className="rounded-full border border-[#d3c48738] bg-[#d3c48714] px-3 py-1.5 text-[11px] tracking-[0.22em] text-[#efe3ba] uppercase transition hover:bg-[#d3c48722] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-200"
+          >
+            Garden
+          </Link>
+          <nav
+            aria-label="External profile links"
+            className="flex flex-wrap items-center justify-end gap-1 sm:gap-3"
+          >
           {siteConfig.links.map((link) => (
             <a
               key={link.label}
@@ -22,7 +30,8 @@ export function TopNav() {
               {link.label}
             </a>
           ))}
-        </nav>
+          </nav>
+        </div>
       </div>
     </header>
   );
