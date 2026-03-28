@@ -6,18 +6,38 @@ export function SummaryCard({
   label,
   value,
   detail,
+  href,
+  interactive = false,
 }: {
   label: string;
   value: string | number;
   detail: string;
+  href?: string;
+  interactive?: boolean;
 }) {
-  return (
-    <article className="garden-surface relative overflow-hidden px-5 py-5">
+  const content = (
+    <article
+      className={`garden-surface relative overflow-hidden px-5 py-5 ${
+        interactive
+          ? "border-2 border-[#1f5b34] transition duration-300 hover:-translate-y-1 hover:border-[#2a7a45] hover:bg-[rgba(8,15,12,0.68)]"
+          : ""
+      }`}
+    >
       <p className="garden-eyebrow text-[11px] text-[#dbe4d6] uppercase">{label}</p>
       <p className="mt-4 text-3xl font-semibold tracking-[-0.03em] text-[#f5f2eb] sm:text-[2.15rem]">{value}</p>
       <p className="mt-3 text-sm leading-6 text-[#e0e5dc] sm:text-[15px]">{detail}</p>
     </article>
   );
+
+  if (href) {
+    return (
+      <Link href={href} className="block">
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
 }
 
 export function SectionCard({
@@ -36,12 +56,12 @@ export function SectionCard({
         <div className="flex min-w-0 items-start gap-4">
           <PlantSprite plant={examplePlant} compact />
           <div className="min-w-0">
-          <p className="garden-eyebrow text-[11px] text-[#dbe4d6] uppercase">
-            Garden Section
-          </p>
-          <h2 className="garden-heading mt-4 text-[1.85rem] leading-[1.02] text-[#f6f4ee]">
-            {section.name}
-          </h2>
+            <p className="garden-eyebrow text-[11px] text-[#dbe4d6] uppercase">
+              Garden Section
+            </p>
+            <h2 className="garden-heading mt-4 text-[1.85rem] leading-[1.02] text-[#f6f4ee]">
+              {section.name}
+            </h2>
           </div>
         </div>
         <div className="garden-pill px-3 py-1.5 text-[11px] font-medium tracking-[0.08em] text-[#f3eee0]">

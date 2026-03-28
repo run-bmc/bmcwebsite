@@ -60,20 +60,13 @@ export default async function GardenHomePage() {
       <div className="space-y-8">
         <PlantOfTheDay plants={plants} />
 
-        <section>
-          <Link
-            href="/garden/plants"
-            className="inline-flex rounded-full border border-[#d3c48766] bg-[#d3c48722] px-6 py-3 text-sm font-medium text-[#f5e7bb] transition hover:-translate-y-0.5 hover:bg-[#d3c48730]"
-          >
-            Browse all plants
-          </Link>
-        </section>
-
         <section className="grid gap-4 md:grid-cols-2">
           <SummaryCard
             label="Plants"
             value={plants.length}
             detail="The full current library, fetched fresh on every page load."
+            href="/garden/plants"
+            interactive
           />
           <SummaryCard
             label="Sections"
