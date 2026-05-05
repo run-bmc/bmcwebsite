@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: siteConfig.name,
-  description: "A minimalist one-page site with a playable space shooter demo.",
+  description:
+    "Personal site: playable space shooter and a garden plant library backed by Airtable.",
 };
 
 export default function RootLayout({
@@ -14,7 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

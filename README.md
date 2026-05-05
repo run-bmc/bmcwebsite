@@ -1,6 +1,8 @@
-# Personal Space Demo
+# bmc-website
 
-Single-page personal website built with Next.js, React, TypeScript, Tailwind CSS, and an HTML5 canvas game loop.
+Personal site for Blake McDowall: a canvas space-shooter on the home page and a **Garden Library** at `/garden` (Airtable-backed plants and sections).
+
+Stack: Next.js, React, TypeScript, Tailwind CSS.
 
 ## Run locally
 
@@ -9,29 +11,37 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000). The garden needs Airtable env vars (see below) to load live data; without them you will see the configured error state.
+
+## Environment (garden)
+
+Create a `.env.local` with:
+
+- `AIRTABLE_TOKEN` — personal access token with read access to the base
+- `AIRTABLE_BASE_ID` — base ID for the garden data
 
 ## Edit name and links
 
-Update [`src/config/site.ts`](/Users/blakemcdowall/Documents/New project/src/config/site.ts).
+Update [`src/config/site.ts`](src/config/site.ts).
 
 ## Architecture
 
-- `src/app/page.tsx`: one-page entry point
-- `src/components/TopNav.tsx`: persistent external-only nav
-- `src/components/GameShell.tsx`: canvas host and React bridge
-- `src/components/Overlay.tsx`: idle, game over, and mobile preview messaging
-- `src/components/ScoreDisplay.tsx`: in-game score chip
-- `src/game/state.ts`: world model and game states
-- `src/game/loop.ts`: requestAnimationFrame update step
-- `src/game/render.ts`: canvas drawing
-- `src/game/input.ts`: keyboard input handling
-- `src/game/spawn.ts`: target spawn timing and difficulty ramp
-- `src/game/collision.ts`: simple AABB collision checks
-- `src/game/entities/*`: player, bullet, and target shapes
+**Home**
+
+- `src/app/page.tsx` — entry; mounts the game
+- `src/components/TopNav.tsx` — external links nav
+- `src/components/GameShell.tsx` — canvas host
+- `src/components/Overlay.tsx` — idle / game over / mobile messaging
+- `src/components/ScoreDisplay.tsx` — score chip
+- `src/game/*` — state, loop, render, input, spawn, collision, entities
+
+**Garden**
+
+- `src/app/garden/*` — library home, plants, sections, export
+- `src/lib/garden/*` — Airtable fetch, types, slugs, normalization
+- `src/components/garden/*` — UI shell, cards, filters, export
 
 ## Notes
 
-- Desktop supports `Left`, `Right`, and `Space`.
-- Mobile keeps the same visual shell and animated scene, but stays in preview mode by design.
-- The temporary scaffold folder `codex-space-site/` can be removed if you do not want to keep it.
+- Desktop game: `Left`, `Right`, and `Space`.
+- Mobile home: same shell and motion; preview mode by design (no full play controls).
